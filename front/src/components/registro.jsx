@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 const Registro = () => {
     const [email, setEmail] = useState('');
     const [contraseña, setContraseña] = useState('');
+    const [dni, setDni] = useState('');
     const [rol, setRol] = useState('usuario');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -16,7 +17,7 @@ const Registro = () => {
         setError('');
         
         // Validaciones en el cliente
-        if (email.trim() === '' || contraseña.trim() === '') {
+        if (email.trim() === '' || contraseña.trim() === '' || dni.trim() === '') {
             setError('Por favor completa todos los campos');
             setLoading(false);
             return;
@@ -27,9 +28,14 @@ const Registro = () => {
             setLoading(false);
             return;
         }
+        if (dni.length !== 8) {
+            setError('El DNI debe tener 8 caracteres');
+            setLoading(false);
+            return;
+        }
         
         try {
-            await api.post('/registro', { email, contraseña, rol });
+            await api.post('/registro', { email, contraseña, rol, dni });
             alert('Registro exitoso. Inicia sesión ahora.');
             navigate('/');
         } catch (error) {
@@ -58,7 +64,13 @@ const Registro = () => {
                         onChange={(e) => setContraseña(e.target.value)}
                         required
                     />
-                  
+                    <input
+                    placeholder='dni'
+                        type="text"
+                        value={dni}
+                        onChange={(e) => setDni(e.target.value)}
+                        required
+                    />
                 <button type="submit" disabled={loading}>{loading ? 'Registrando...' : 'Registrarse'}</button>
             </form>
             <p><Link to="/">¿Ya tienes cuenta? Inicia sesión aquí</Link></p>

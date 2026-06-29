@@ -19,10 +19,10 @@ function login(data, callback) {
 }
 
 function registro(data, callback) {
-    const { email, contraseña, rol } = data;
+    const { email, contraseña, rol, dni } = data;
     
-    if (!email || !contraseña || !rol) {
-        return callback(new Error("Email, contraseña y rol son requeridos"));
+    if (!email || !contraseña || !rol || !dni) {
+        return callback(new Error("Email, contraseña, rol y dni son requeridos"));
     }
     
     if (!email.includes("@")) {
@@ -38,8 +38,8 @@ function registro(data, callback) {
     }
 
     conexion.query(
-        "INSERT INTO cuenta (email, contraseña, rol) VALUES (?, ?, ?)",
-        [email, contraseña, rol],
+        "INSERT INTO cuenta (email, contraseña, rol, dni) VALUES (?, ?, ?, ?)",
+        [email, contraseña, rol, dni],
         callback
     );
 }

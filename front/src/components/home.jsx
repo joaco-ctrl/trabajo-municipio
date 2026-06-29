@@ -20,6 +20,11 @@ const Home = () => {
           Cerrar Sesión
         </Link>
       </div>
+       <div style={{ marginBottom: '30px' }}>
+        <Link to="/turnos" style={{ padding: '10px 20px', backgroundColor: '#0c08c4', color: 'white', textDecoration: 'none', borderRadius: '5px' }}>
+          turnos
+        </Link>
+      </div>
       
       <h1>¡Bienvenido {rol.charAt(0).toUpperCase() + rol.slice(1)}!</h1>
       

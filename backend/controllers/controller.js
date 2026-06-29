@@ -1,68 +1,7 @@
-﻿const usuarioservice = require("./service");
-const loginservice = require("./login");
+﻿const loginservice = require("./login");
 const bcrypt = require("bcrypt");
 const auth = require("./auth");
 const jwt = require("jsonwebtoken");
-//CRUD USUARIOS
-function buscarUsuarios(req, res) {
-    const { id } = req.params;
-
-    usuarioservice.buscarUsuarios({ id }, (err, results) => {
-        if (err) {
-            return res.status(400).json({ error: err.message });
-        }
-
-        if (!results.length) {
-            return res.status(404).json({ error: "Usuario no encontrado" });
-        }
-
-        res.json(results[0]);
-    });
-}
-
-function obtenerUsuarios(req, res) {
-    usuarioservice.obtenerUsuarios((err, results) => {
-        if (err) {
-            console.error('Error al obtener usuarios:', err);
-            return res.status(500).json({ error: "Error al obtener usuarios de la base de datos" });
-        }
-        res.json(results);
-    });
-}
-
-function crearUsuario(req, res) {
-    const { nombre, apellido } = req.body;
-    usuarioservice.crearUsuario({ nombre, apellido }, (err, results) => {
-        if (err) {
-            res.status(400).json({ error: err.message });
-        } else {
-            res.status(201).json({ mensaje: "usuario creado correctamente" });
-        }
-    });
-}
-
-function actualizarUsuario(req, res) {
-    const { nombre, apellido } = req.body;
-    const { id } = req.params;
-    usuarioservice.actualizarUsuario(id, { nombre, apellido }, (err, results) => {
-        if (err) {
-            res.status(400).json({ error: err.message });
-        } else {
-            res.json({ mensaje: "Usuario actualizado correctamente" });
-        }
-    });
-}
-
-function eliminarUsuario(req, res) {
-    const { id } = req.params;
-    usuarioservice.eliminarUsuario(id, (err, results) => {
-        if (err) {
-            res.status(400).json({ error: err.message });
-        } else {
-            res.json({ mensaje: "usuario borrado correctamente" });
-        }
-    });
-}
 //FIN CRUD USUARIOS
 
 //LOGIN
@@ -117,11 +56,11 @@ function login(req, res) {
 }
 
 function registro(req, res) {
-    const { email, contraseña, rol } = req.body;
+    const { email, contraseña, rol, dni } = req.body;
     
     // Validación de entrada
-    if (!email || !contraseña || !rol) {
-        return res.status(400).json({ error: "Email, contraseña y rol son requeridos" });
+    if (!email || !contraseña || !rol || !dni) {
+        return res.status(400).json({ error: "Email, contraseña, rol y dni son requeridos" });
     }
     
     // Validar longitud de contraseña
@@ -155,11 +94,6 @@ function registro(req, res) {
 
 
 module.exports = {
-    buscarUsuarios,
-    obtenerUsuarios,
-    crearUsuario,
-    eliminarUsuario,
-    actualizarUsuario,
     login,
     registro
 };
